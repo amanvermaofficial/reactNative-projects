@@ -1,45 +1,43 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React ,{useState,useEffect, JSX} from 'react'
+import { StyleSheet, Text, View,ActivityIndicator} from 'react-native'
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { setupPlayer,addTrack } from '../musicPlayerService'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { playbackService } from '../musicPlayerService'
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+export default function App():JSX.Element {
+  const [isPlayerReady, setIsPlayerReady] = useState(false)
 
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
+  async function setup(){
+    const isSetup = await setupPlayer()
+    if(isSetup){
+      await addTrack()
+    }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+    setIsPlayerReady(isSetup)
+  }
+
+  useEffect(()=>{
+    setup()
+  },[])
+
+  if(!isPlayerReady){
+    return (
+      <SafeAreaView>
+        <ActivityIndicator />
+      </SafeAreaView>
+    )
+  }
 
   return (
     <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
+      <Text>App</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-});
-
-export default App;
+  }
+})
