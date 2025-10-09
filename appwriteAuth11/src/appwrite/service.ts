@@ -1,12 +1,13 @@
 import { ID, Account, Client } from 'appwrite';
-import Config from 'react-native-config'
+import { APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID } from '@env';
 
 import Snackbar from 'react-native-snackbar';
 
 const appwriteClient = new Client();
 
-const APPWRITE_ENDPOINT = Config.APPWRITE_ENDPOINT;
-const APPWRITE_PROJECT_ID = Config.APPWRITE_PROJECT_ID;
+console.log('APPWRITE_ENDPOINT:', APPWRITE_ENDPOINT);
+console.log('APPWRITE_PROJECT_ID:', APPWRITE_PROJECT_ID);
+
 
 type CreateUserAccount = {
     email: string,
